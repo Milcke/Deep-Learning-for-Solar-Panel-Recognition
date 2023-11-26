@@ -55,7 +55,8 @@ def compute_labels_accuracy():
 
 def yolo_testing(**kwargs):
     params = get_yolo_params(**kwargs)
-    yolo_eval.run(**params)
+    results =yolo_eval.run(**params)
+    return results
 
 
 def get_yolo_params(name, source, project='results', model='best.pt', device='cuda:0'):
@@ -66,7 +67,7 @@ def get_yolo_params(name, source, project='results', model='best.pt', device='cu
         'save_txt': True,
         'project': project,
         'name': name,
-        'evolove': 300,
+        # 'evolove': 300,
         'line_thickness': 2,
         'hide_labels': True,
         'device': device
@@ -77,13 +78,15 @@ def main():
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     mname = 'yolov5s_100'
-    yolo_testing(
+    
+    results = yolo_testing(
         name=f'{mname}_tiles2',
-        source='yolo/yolov5/data/solar_panels/images/test',  # yolov5/data/solar_panels/tiles2
+        source='src/models/yolo/yolov5/data/solar_panels/images/test/test2.png', 
         project='results',
-        model=f'models/{mname}/weights/best.pt',
+        model='src/models/yolov5_X.pt',
         device=device
     )
+    print(results)
 
     # compute_labels_accuracy()
 
